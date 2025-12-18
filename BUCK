@@ -1,6 +1,6 @@
 rust_binary(
     name = "buck2-fail-zmq",
-    srcs = ["src/main.rs"],
+    srcs = glob(["src/**/*.rs"]),
     deps = [
         "//third-party:zmq",
         "//vendor/zeromq:zmq",

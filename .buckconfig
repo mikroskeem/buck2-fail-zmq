@@ -27,3 +27,6 @@
 
 [project]
   ignore = .git
+
+[rust]
+  remap_src_paths = yes
