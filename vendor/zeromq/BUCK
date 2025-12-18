@@ -341,7 +341,7 @@ cxx_library(
         "DEFAULT": [],
     }),
     preferred_linkage = "static",
-    linker_flags = select({
+    exported_linker_flags = select({
         "config//os:macos": [
             "-lc++",
         ],
