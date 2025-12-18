@@ -1,0 +1,4 @@
+extra_deps = [":libc-0.2.178"]
+
+[buildscript]
+run.env = { "PROFILE" = "release" }

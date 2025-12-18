@@ -1,0 +1,17 @@
+manifest_path = "Cargo.toml"
+third_party_dir = "third-party"
+
+cargo_env = [
+    "CARGO_CRATE_NAME",
+    "CARGO_MANIFEST_DIR",
+    "CARGO_MANIFEST_LINKS",
+    "CARGO_PKG_AUTHORS",
+    "CARGO_PKG_DESCRIPTION",
+    "CARGO_PKG_NAME",
+    "CARGO_PKG_REPOSITORY",
+    "CARGO_PKG_VERSION",
+    "CARGO_PKG_VERSION_MAJOR",
+    "CARGO_PKG_VERSION_MINOR",
+    "CARGO_PKG_VERSION_PATCH",
+    "CARGO_PKG_VERSION_PRE",
+]
