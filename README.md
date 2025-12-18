@@ -14,6 +14,8 @@ The `zmq` crate depends on the native ZeroMQ C++ library (`libzmq`). When using 
 
 Reindeer reports that glob patterns in `fixups.toml` (like `vendor/src/**/*.cpp`, `vendor/external/**/*.c`, header files, etc.) match no files, even though these files exist in the vendored source. This suggests Reindeer's glob resolution doesn't work correctly with `zeromq-src`'s vendored source structure, making it impossible to use Reindeer's fixup mechanism for this crate. 
 
+See commit 043aceedcfe3cfbac98bcdbc3a360de1a66b3333 for reference. Apply it and try `just buckify`
+
 As a result, we must manually define the entire ZeroMQ build in Buck2 rather than relying on Reindeer's automatic translation.
 
 ## The Solution
