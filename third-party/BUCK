@@ -1973,6 +1973,10 @@ buildscript_run(
     name = "zmq-sys-0.12.0-build-script-main-run",
     package_name = "zmq-sys",
     buildscript_rule = ":zmq-sys-0.12.0-build-script-main",
+    # Capture `cargo:rustc-link-lib`/`cargo:rustc-link-search` from the build script so
+    # downstream crates (and final binaries) get the needed -L/-l flags to link libzmq.
+    rustc_link_lib = True,
+    rustc_link_search = True,
     env = {
         "CARGO_MANIFEST_LINKS": "zmq",
         "CARGO_PKG_AUTHORS": "a.rottmann@gmx.at:erick.tryzelaar@gmail.com",
