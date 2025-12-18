@@ -1,6 +1,5 @@
 # Don't run the build script - we provide our own prebuilt zeromq library
-#buildscript.run = false
-buildscript.run = true
+buildscript.run = false
 
 # Link against our Buck2-built zeromq library
-#extra_deps = ["//vendor/zeromq:zmq"]
+extra_deps = ["//vendor/zeromq:zmq"]
