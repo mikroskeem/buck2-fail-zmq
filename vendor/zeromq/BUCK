@@ -145,18 +145,9 @@ cxx_library(
         "-DZMQ_USE_BUILTIN_SHA1=1",
         "-DZMQ_HAVE_WS=1",
         "-DZMQ_CACHELINE_SIZE=64",
-        "-I$(location :platform-hpp)",
     ],
     preferred_linkage = "static",
     visibility = ["PUBLIC"],
-    deps = [":platform-hpp"],
-)
-
-genrule(
-    name = "platform-hpp",
-    out = "src",
-    cmd = "mkdir -p $OUT && touch $OUT/platform.hpp",
-    visibility = [],
 )
 
 cxx_library(
@@ -293,6 +284,7 @@ cxx_library(
     headers = [
         ":zeromq-src[include/zmq.h]",
         ":zeromq-src[include/zmq_utils.h]",
+        "platform.hpp",
     ],
     header_namespace = "",
     exported_headers = {
@@ -312,7 +304,6 @@ cxx_library(
         "-DZMQ_HAVE_WS=1",
         "-DZMQ_CACHELINE_SIZE=64",
         "-std=c++11",
-        "-I$(location :platform-hpp)",
     ] + select({
         "config//os:macos": [
             "-mmacosx-version-min=11.0",
@@ -361,7 +352,6 @@ cxx_library(
     }),
     visibility = ["PUBLIC"],
     deps = [
-        ":platform-hpp",
         ":sha1",
     ],
 )
