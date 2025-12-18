@@ -1,0 +1,25 @@
+precise_srcs = false
+extra_srcs = [
+  "vendor/**/*",
+]
+
+[[cxx_library]]
+name = "zmq"
+srcs = ["vendor/src/**/*.c", "vendor/src/**/*.cpp", "vendor/external/sha1/sha1.c"]
+headers = ["vendor/src/**/*.h", "vendor/src/**/*.hpp", "vendor/include/**/*.h", "vendor/include/**/*.hpp"]
+include_paths = [
+  "vendor/include",
+  "vendor/src",
+]
+
+
+# [ERROR reindeer] Unused globs:
+#     fixups/zeromq-src/fixups.toml line 3: "vendor/**/*" matches no files
+#     fixups/zeromq-src/fixups.toml line 8: "vendor/src/**/*.c" matches no files
+#     fixups/zeromq-src/fixups.toml line 8: "vendor/src/**/*.cpp" matches no files
+#     fixups/zeromq-src/fixups.toml line 8: "vendor/external/sha1/sha1.c" matches no files
+#     fixups/zeromq-src/fixups.toml line 9: "vendor/src/**/*.h" matches no files
+#     fixups/zeromq-src/fixups.toml line 9: "vendor/src/**/*.hpp" matches no files
+#     fixups/zeromq-src/fixups.toml line 9: "vendor/include/**/*.h" matches no files
+#     fixups/zeromq-src/fixups.toml line 9: "vendor/include/**/*.hpp" matches no files
+# error: Recipe `buckify` failed on line 5 with exit code 1
