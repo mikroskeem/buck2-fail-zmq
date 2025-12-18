@@ -1,0 +1,13 @@
+[buildscript]
+run = false
+
+[[cxx_library]]
+# Unlike zeromsq-src - c_src/* is available in this crate. I haven't figured out yet why.
+name = "mimalloc"
+srcs = ["c_src/mimalloc/v3/src/static.c"]
+headers = ["c_src/mimalloc/v3/include/**/*.h", "c_src/mimalloc/v3/src/**/*.h"]
+include_paths = [
+  "c_src/mimalloc/v3/include",
+  "c_src/mimalloc/v3/src",
+]
+compiler_flags = ["-Wno-error=date-time"]
