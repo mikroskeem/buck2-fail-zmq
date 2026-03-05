@@ -4,62 +4,62 @@
   "name": "reindeer",
   "platforms": {
     "macos-aarch64": {
-      "size": 10333626,
+      "size": 9907452,
       "hash": "blake3",
-      "digest": "087035eba5af3addbbd79354b48ba8c3b5696d1d301ee68023b386e113a68b13",
+      "digest": "517b59b53ec97bd054a235adcf1d64c60193ae79c8d5d3733c997b15e6805095",
       "format": "zst",
       "path": "reindeer-aarch64-apple-darwin",
       "providers": [
         {
-          "url": "https://github.com/facebookincubator/reindeer/releases/download/v2025.11.24.00/reindeer-aarch64-apple-darwin.zst"
+          "url": "https://github.com/ZentriaMC/reindeer/releases/download/v2026.03.05.00-zentria/reindeer-aarch64-apple-darwin.zst"
         }
       ]
     },
     "linux-aarch64": {
-      "size": 12023922,
+      "size": 11719166,
       "hash": "blake3",
-      "digest": "1c41919ddadbdd2390b43a6d4a97267e079038fcb3c42db14868627b0b6eaa6d",
+      "digest": "87a2aaeceb99d0f93c39c1054fcabe345fadb8a79ed40d325e64c809c3fa7837",
       "format": "zst",
       "path": "reindeer-aarch64-unknown-linux-musl",
       "providers": [
         {
-          "url": "https://github.com/facebookincubator/reindeer/releases/download/v2025.11.24.00/reindeer-aarch64-unknown-linux-musl.zst"
+          "url": "https://github.com/ZentriaMC/reindeer/releases/download/v2026.03.05.00-zentria/reindeer-aarch64-unknown-linux-musl.zst"
         }
       ]
     },
     "macos-x86_64": {
-      "size": 10444977,
+      "size": 10046124,
       "hash": "blake3",
-      "digest": "8242100bf3b07bd5665c07f42e082a2546b39a2d096c556c19db62d879604c3c",
+      "digest": "f12d5e21e659d142aa6289aa4748bfee140dbf5c71e8d4c1afdcc9bc29eed98a",
       "format": "zst",
       "path": "reindeer-x86_64-apple-darwin",
       "providers": [
         {
-          "url": "https://github.com/facebookincubator/reindeer/releases/download/v2025.11.24.00/reindeer-x86_64-apple-darwin.zst"
+          "url": "https://github.com/ZentriaMC/reindeer/releases/download/v2026.03.05.00-zentria/reindeer-x86_64-apple-darwin.zst"
         }
       ]
     },
     "windows-x86_64": {
-      "size": 9285431,
+      "size": 9086011,
       "hash": "blake3",
-      "digest": "c90e79a55f15b20021eb5ee6ddd4149cb1f6c013cfca4d7ab3902e94b1de0dd3",
+      "digest": "eb2c4964c002df84764307d1067a9ac43965a2e10a9568a6dbfa3aba3a74bb90",
       "format": "zst",
       "path": "reindeer-x86_64-pc-windows-msvc.exe",
       "providers": [
         {
-          "url": "https://github.com/facebookincubator/reindeer/releases/download/v2025.11.24.00/reindeer-x86_64-pc-windows-msvc.exe.zst"
+          "url": "https://github.com/ZentriaMC/reindeer/releases/download/v2026.03.05.00-zentria/reindeer-x86_64-pc-windows-msvc.exe.zst"
         }
       ]
     },
     "linux-x86_64": {
-      "size": 12135295,
+      "size": 11835204,
       "hash": "blake3",
-      "digest": "ad5cdd028d244d47f6ba2368f9c8a9ab1c19451a046b917ce84b07acc7fee319",
+      "digest": "77bb9ed0b1c5c6665954e9e308b652c6a53386502e094b32b7b9068b270026ff",
       "format": "zst",
       "path": "reindeer-x86_64-unknown-linux-musl",
       "providers": [
         {
-          "url": "https://github.com/facebookincubator/reindeer/releases/download/v2025.11.24.00/reindeer-x86_64-unknown-linux-musl.zst"
+          "url": "https://github.com/ZentriaMC/reindeer/releases/download/v2026.03.05.00-zentria/reindeer-x86_64-unknown-linux-musl.zst"
         }
       ]
     }

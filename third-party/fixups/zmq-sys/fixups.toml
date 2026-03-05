@@ -1,5 +1,13 @@
-# Don't run the build script - we provide our own prebuilt zeromq library
+# Don't run the build script - zeromq-src's [[cxx_library]] fixup handles it
 buildscript.run = false
 
-# Link against our Buck2-built zeromq library
-extra_deps = ["//vendor/zeromq:zmq"]
+# zmq-sys -> zeromq-src is a build-only dep in Cargo, so we need an explicit
+# link-time dep on the cxx_library that provides the zmq symbols.
+extra_deps = ["//third-party:zeromq-src-0.2.6+4.3.4-zmq"]
+
+# Link the C++ standard library (zeromq is C++)
+['cfg(target_os = "macos")']
+rustc_flags = ["-l", "c++"]
+
+['cfg(target_os = "linux")']
+rustc_flags = ["-l", "stdc++"]

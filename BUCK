@@ -4,6 +4,5 @@ rust_binary(
     deps = [
         "//third-party:mimalloc",
         "//third-party:zmq",
-        "//vendor/zeromq:zmq",
     ],
 )

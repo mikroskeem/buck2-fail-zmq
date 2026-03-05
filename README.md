@@ -1,33 +1,43 @@
-# Getting trolled by Buck2 and Reindeer
+# Building ZeroMQ with Buck2 and Reindeer
 
-This repository demonstrates the challenges of using Rust crates with native dependencies (specifically the `zmq` crate) in Buck2 builds, and provides a working solution.
+This repository demonstrates how to build Rust crates with native C++ dependencies (specifically the `zmq` crate / `libzmq`) in Buck2 using Reindeer's fixup mechanism.
 
-## The Problem
+## Background
 
-The `zmq` crate depends on the native ZeroMQ C++ library (`libzmq`). When using Reindeer to convert Cargo dependencies to Buck2, native dependencies often fail because:
+The `zmq` crate depends on `libzmq`, a C++ library. The dependency chain is:
 
-- Reindeer doesn't automatically handle native library builds
-- The `zmq-sys` crate uses the `zeromq-src` crate, which always builds `libzmq` from source (vendored), but Reindeer struggles to translate this build process to Buck2
-- Buck2's build system requires explicit native library definitions
+```
+zmq (Rust) -> zmq-sys (Rust, FFI bindings) -> zeromq-src (vendored C++ source)
+```
 
-**Specific issue with `zeromq-src`**: While it's possible to define `cxx_library` rules for other native dependencies (e.g., `libmimalloc-sys` works fine), attempting to create fixups for `zeromq-src` results in errors about unused globs.
+Upstream Reindeer's `[[cxx_library]]` fixups only work for crates that have a build script (`build.rs`). Since `zeromq-src` has no build script (it's only a source distribution crate), the fixup globs are never walked and Reindeer reports them as matching no files.
 
-Reindeer reports that glob patterns in `fixups.toml` (like `vendor/src/**/*.cpp`, `vendor/external/**/*.c`, header files, etc.) match no files, even though these files exist in the vendored source. This suggests Reindeer's glob resolution doesn't work correctly with `zeromq-src`'s vendored source structure, making it impossible to use Reindeer's fixup mechanism for this crate. 
+This project uses a [patched Reindeer](https://github.com/ZentriaMC/reindeer) that allows `[[cxx_library]]` fixups for crates without build scripts, making it possible to build `libzmq` entirely through Reindeer fixups — no manual `BUCK` files needed.
 
-See commit 043aceedcfe3cfbac98bcdbc3a360de1a66b3333 for reference. Apply it and try `just buckify`
+## How It Works
 
-As a result, we must manually define the entire ZeroMQ build in Buck2 rather than relying on Reindeer's automatic translation.
+### zeromq-src fixup (`third-party/fixups/zeromq-src/fixups.toml`)
 
-## The Solution
+Defines a `[[cxx_library]]` that builds `libzmq` from the vendored source:
+- Compiles `vendor/src/**/*.cpp` and `vendor/external/sha1/sha1.c`
+- Excludes WSS files that require GnuTLS (`wss_engine.cpp`, `wss_address.cpp`)
+- Uses a custom `platform.hpp` (in `fixups/zeromq-src/include/`) that detects the target OS via preprocessor macros (`__APPLE__`, `__linux__`, `_WIN32`) instead of requiring per-platform fixup sections
 
-This project includes a workaround that manually builds `libzmq` from source using Buck2's build system:
+### zmq-sys fixup (`third-party/fixups/zmq-sys/fixups.toml`)
 
-- **`vendor/zeromq/BUCK`**: Defines a complete Buck2 build for ZeroMQ 4.3.4 from source
-- **`third-party/`**: Contains Reindeer-generated Buck2 rules for Rust crates
+- Disables the build script (`buildscript.run = false`)
+- Adds an explicit dependency on the zeromq-src cxx_library via `extra_deps` (needed because `zmq-sys -> zeromq-src` is a build-only dep in Cargo, which gets dropped when the build script is disabled)
+- Links the C++ standard library per-platform: `-lc++` on macOS, `-lstdc++` on Linux
+
+### Platform support
+
+`reindeer.toml` defines platforms for cross-compilation:
+- `linux-x86_64` (x86_64-unknown-linux-gnu)
+- `linux-arm64` (aarch64-unknown-linux-gnu)
+- `macos` (x86_64-apple-darwin)
+- `macos-arm64` (aarch64-apple-darwin)
 
 ## Building
-
-### Build Steps
 
 1. **Generate Buck2 rules from Cargo dependencies** (if needed):
    ```bash
@@ -43,26 +53,21 @@ This project includes a workaround that manually builds `libzmq` from source usi
 
 ```
 .
-├── src/                   # Rust source code
-├── vendor/zeromq/         # Manual Buck2 build for libzmq
-├── third-party/           # Reindeer related files
-│   ├── BUCK               # Reindeer-generated Buck2 rules
-│   └── fixups/            # Custom fixups for various crates
-├── scripts/reindeer       # dotslash reindeer script
-├── BUCK                   # Main Buck2 build file
-├── reindeer.toml          # Reindeer configuration
-└── rust-toolchain.toml    # Rust toolchain version
+├── src/                           # Rust source code
+├── third-party/                   # Reindeer related files
+│   ├── BUCK                       # Reindeer-generated Buck2 rules
+│   └── fixups/                    # Custom fixups for various crates
+│       ├── zmq-sys/fixups.toml    # Disable build script, link cxx_library
+│       └── zeromq-src/            # cxx_library fixup for libzmq
+│           ├── fixups.toml
+│           └── include/platform.hpp
+├── scripts/reindeer               # DotSlash reindeer binary (patched)
+├── BUCK                           # Main Buck2 build file
+├── reindeer.toml                  # Reindeer configuration (with platforms)
+└── rust-toolchain.toml            # Rust toolchain version
 ```
-
-## Why This Matters
-
-This example highlights a common pain point when migrating Rust projects to Buck2: **native dependencies require manual intervention**. While Reindeer handles pure Rust crates well, crates with native dependencies often need:
-
-1. Manual native library builds (like `libzmq` here)
-2. Custom fixups to help Reindeer understand the dependency chain
-3. Careful configuration of linker flags and include paths
 
 ## Tool versions
 - Buck2: `buck2 a24056c452b43451b9a34aa5b985fef9 <build-id>`
 - Rust: See [rust-toolchain.toml](/rust-toolchain.toml)
-- Reindeer: `v2025.11.24.00` (See [scripts/reindeer](/scripts/reindeer))
+- Reindeer: `v2026.03.05.00-zentria` ([ZentriaMC/reindeer](https://github.com/ZentriaMC/reindeer), see [scripts/reindeer](/scripts/reindeer))

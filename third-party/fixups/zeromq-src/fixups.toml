@@ -1,0 +1,26 @@
+precise_srcs = false
+extra_srcs = [
+  "vendor/**/*",
+]
+
+[[cxx_library]]
+name = "zmq"
+srcs = ["vendor/src/**/*.cpp", "vendor/external/sha1/sha1.c"]
+headers = ["vendor/src/**/*.h", "vendor/src/**/*.hpp", "vendor/include/**/*.h"]
+include_paths = [
+  "vendor/include",
+  "vendor/src",
+]
+exclude = ["vendor/src/wss_engine.cpp", "vendor/src/wss_address.cpp"]
+fixup_include_paths = ["include"]
+header_namespace = ""
+compiler_flags = [
+  "-DZMQ_BUILD_TESTS=OFF",
+  "-DZMQ_BUILD_DRAFT_API=1",
+  "-DZMQ_USE_CV_IMPL_STL11=1",
+  "-DZMQ_STATIC=1",
+  "-DZMQ_USE_BUILTIN_SHA1=1",
+  "-DZMQ_HAVE_WS=1",
+  "-DZMQ_CACHELINE_SIZE=64",
+]
+preferred_linkage = "static"
