@@ -26,7 +26,7 @@
   execution_platforms = prelude//platforms:default
 
 [project]
-  ignore = .git
+  ignore = .git, target
 
 [rust]
   remap_src_paths = yes
